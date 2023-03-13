@@ -27,20 +27,16 @@ public class UserDBConnection {
 		}
 		return true;
 	}
-	
-	public boolean login(String email, String password) throws Exception
-	{
 
-		User user = null;
+	public boolean login(String email, String password) throws Exception {
 		String sql = "select password from user where email=?";
 		PreparedStatement statement;
 		try {
 			statement = connection.prepareStatement(sql);
 			statement.setString(1, email);
 			ResultSet rs = statement.executeQuery();
-			if(rs.next())
-			{
-				if(password.equals(rs.getString(1)))
+			if (rs.next()) {
+				if (password.equals(rs.getString(1)))
 					return true;
 			}
 			throw new Exception("Invalid credentials!");

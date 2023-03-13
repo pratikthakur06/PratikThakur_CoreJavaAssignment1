@@ -34,16 +34,59 @@ public class TaskDBConnection {
 		}
 		return tasks;
 	}
+	
+	public List<Task> getAllCompletedTasks(String email) throws Exception {
+		String sql = "select * from task where taskCompleted = 'true' and assignedTo = '"+email+"'";
+		List<Task> tasks = new ArrayList<Task>();
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				Task task = new Task();
+				task.setTaskId(rs.getInt(1));
+				task.setTaskTitle(rs.getString(2));
+				task.setTaskText(rs.getString(3));
+				task.setAssignedTo(rs.getString(4));
+				task.setTaskCompleted(rs.getString(5));
+				tasks.add(task);
+			}
+		} catch (SQLException e) {
+			throw new Exception(e.getMessage());
+		}
+		return tasks;
+	}
+	
+	public List<Task> getAllIncompletedTasks(String email) throws Exception {
+		String sql = "select * from task where taskCompleted = 'false' and assignedTo = '"+email+"'";
+		List<Task> tasks = new ArrayList<Task>();
+		try {
+			Statement statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+			while (rs.next()) {
+				Task task = new Task();
+				task.setTaskId(rs.getInt(1));
+				task.setTaskTitle(rs.getString(2));
+				task.setTaskText(rs.getString(3));
+				task.setAssignedTo(rs.getString(4));
+				task.setTaskCompleted(rs.getString(5));
+				tasks.add(task);
+			}
+		} catch (SQLException e) {
+			throw new Exception(e.getMessage());
+		}
+		return tasks;
+	}
 
 	public boolean insertTask(Task task) throws Exception {
-		String sql = "insert into task values(?,?,?,?)";
+		String sql = "insert into task values(?,?,?,?,?)";
 		System.out.println(sql);
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setString(1, task.getTaskTitle());
-			statement.setString(2, task.getTaskText());
-			statement.setString(3, task.getAssignedTo());
-			statement.setString(4, task.isTaskCompleted());
+			statement.setInt(1, task.getTaskId());
+			statement.setString(2, task.getTaskTitle());
+			statement.setString(3, task.getTaskText());
+			statement.setString(4, task.getAssignedTo());
+			statement.setString(5, task.isTaskCompleted());
 
 			statement.execute();
 		} catch (SQLException ex) {
@@ -85,7 +128,7 @@ public class TaskDBConnection {
 
 	public Task getTaskById(int taskId) throws Exception {
 		Task task = null;
-		String sql = "select taskTitle, taskText, assignedTo, taskCompleted from task where taskId=?";
+		String sql = "select taskId, taskTitle, taskText, assignedTo, taskCompleted from task where taskId=?";
 		PreparedStatement statement;
 		try {
 			statement = connection.prepareStatement(sql);
@@ -93,11 +136,11 @@ public class TaskDBConnection {
 			ResultSet rs = statement.executeQuery();
 			if (rs.next()) {
 				task = new Task();
-				task.setTaskTitle(rs.getString(1));
-				task.setTaskText(rs.getString(2));
-				task.setAssignedTo(rs.getString(3));
-				task.setTaskCompleted(rs.getString(4));
-				task.setTaskId(rs.getInt(5));
+				task.setTaskId(rs.getInt(1));
+				task.setTaskTitle(rs.getString(2));
+				task.setTaskText(rs.getString(3));
+				task.setAssignedTo(rs.getString(4));
+				task.setTaskCompleted(rs.getString(5));
 			} else
 				throw new Exception("No task with taskId: " + taskId + " found");
 		} catch (SQLException e) {
