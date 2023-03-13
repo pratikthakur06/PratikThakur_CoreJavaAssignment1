@@ -98,9 +98,6 @@ public class Menu {
 				break;
 
 			case 2:
-				System.out.println("Enter the task id: ");
-				int taskId = sc.nextInt();
-				sc.nextLine();
 				System.out.println("Enter the task title: ");
 				String taskTitle = sc.nextLine();
 				System.out.println("Enter the task description: ");
@@ -119,7 +116,7 @@ public class Menu {
 			case 3:
 				System.out.println("Edit task!");
 				System.out.println("Enter task id: ");
-				taskId = sc.nextInt();
+				int taskId = sc.nextInt();
 				sc.nextLine();
 				System.out.println("Enter task title: ");
 				taskTitle = sc.nextLine();

@@ -78,15 +78,14 @@ public class TaskDBConnection {
 	}
 
 	public boolean insertTask(Task task) throws Exception {
-		String sql = "insert into task values(?,?,?,?,?)";
+		String sql = "insert into task(taskTitle, taskText, assignedTo, taskCompleted) values(?,?,?,?)";
 		System.out.println(sql);
 		try {
 			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setInt(1, task.getTaskId());
-			statement.setString(2, task.getTaskTitle());
-			statement.setString(3, task.getTaskText());
-			statement.setString(4, task.getAssignedTo());
-			statement.setString(5, task.isTaskCompleted());
+			statement.setString(1, task.getTaskTitle());
+			statement.setString(2, task.getTaskText());
+			statement.setString(3, task.getAssignedTo());
+			statement.setString(4, task.isTaskCompleted());
 
 			statement.execute();
 		} catch (SQLException ex) {
